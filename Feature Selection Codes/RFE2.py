@@ -8,6 +8,8 @@ Created on Thu Jan 30 19:36:22 2020
 import pandas as pd
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
+
 data = pd.read_csv('F:/Dataset/Dataset Version 4/csv_result-cleveland (2).csv')
 X = data.iloc[:,0:47]  #independent columns
 y = data.iloc[:,-1]    #target column i.e price range
@@ -21,4 +23,13 @@ dfcolumns = pd.DataFrame(X.columns)
 #concat two dataframes for better visualization 
 featureScores = pd.concat([dfcolumns,dfscores],axis=1)
 featureScores.columns = ['Specs','Ranking']  #naming the dataframe columns
-print(featureScores.nsmallest(14,'Ranking'))
+#print(featureScores.nsmallest(14,'Ranking'))
+
+l=[]
+l=featureScores.nsmallest(14,'Ranking')
+print(l)
+#featureScores.nlargest(14,'Score')
+ax = plt.gca()
+l.plot(kind='bar',x='Specs',y='Ranking',ax=ax)
+#
+#plt.show()
