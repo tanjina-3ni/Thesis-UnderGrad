@@ -10,7 +10,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 data = pd.read_csv('F:/Dataset/Dataset Version 4/csv_result-cleveland (5).csv')
-X = data.iloc[:,0:47]  #independent columns
+X = data.iloc[:,0:37]  #independent columns
 #y = data.iloc[:,-1]    #target column 'num' 
 #print y
 #get correlations of each features in dataset
