@@ -8,7 +8,7 @@ Created on Thu Feb 27 10:32:50 2020
 import pandas as pd
 
 data = pd.read_csv('F:/Dataset/Dataset Version 4/csv_result-cleveland (corr).csv')
-X = data.iloc[:,0:47]  #independent columns
+X = data.iloc[:,0:33]  #independent columns
 #y = data.iloc[:,-1]    #target column 'num' 
 #print y
 #get correlations of each features in dataset
