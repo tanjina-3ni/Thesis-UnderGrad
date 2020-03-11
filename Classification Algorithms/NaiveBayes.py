@@ -7,7 +7,7 @@ Created on Wed Feb 26 09:10:55 2020
 
 import pandas as pd
 
-data = pd.read_csv('F:/Dataset/Dataset Version 4/csv_result-cleveland (corr).csv')
+data = pd.read_csv('F:/Dataset/Dataset Version 5/csv_result-cleveland (corr2).csv')
 
 X =  data.drop('num', axis=1) #Drop specified labels from rows or columns. axis=1, col
 target = data.iloc[:,-1]
@@ -27,7 +27,7 @@ y_pred = gnb.predict(X_test)
 
 # comparing actual response values (y_test) with predicted response values (y_pred) 
 from sklearn import metrics 
-print("Gaussian Naive Bayes model accuracy(in %):", metrics.accuracy_score(y_test, y_pred)*100)
+print "Gaussian Naive Bayes model accuracy(in %):", metrics.accuracy_score(y_test, y_pred)*100
 
 
 
@@ -38,7 +38,7 @@ import seaborn as sn
 
 
 mat=(confusion_matrix(y_test, y_pred))
-#print mat
+print mat
 df_cm = pd.DataFrame(mat, columns=np.unique(y_test), index = np.unique(y_test))
 df_cm.index.name = 'Actual'
 df_cm.columns.name = 'Predicted'
@@ -46,4 +46,8 @@ plt.figure(figsize = (5,3))
 sn.set(font_scale=1.2)#for label size
 sn.heatmap(df_cm, cmap="Blues", annot=True,annot_kws={"size": 15})# font size
 #print(classification_report(y_test, y_pred))
-
+a=mat[1][1]*1.0
+sen = (mat[1][0]+mat[1][1])*1.0 
+pre = (mat[0][1]+mat[1][1])*1.0 
+print "Sensitivity or Recall: ",a/sen*100
+print "Precision: ",a/pre*100
