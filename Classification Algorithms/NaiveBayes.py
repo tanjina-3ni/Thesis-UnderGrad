@@ -54,3 +54,15 @@ y_pred = gnb.predict(X_test)
 confusionmatrix(y_test, y_pred)
 
 
+# k fold cross validation
+
+from sklearn.cross_validation import KFold, cross_val_score
+k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=0)
+clf = GaussianNB() 
+cv = cross_val_score(clf, X, target, cv=k_fold, n_jobs=1)
+
+s = 0
+for i in range(0,len(cv)):
+    s = s + cv[i]
+print "Accuracy after cross validation : ", (s/len(cv))*100
+
