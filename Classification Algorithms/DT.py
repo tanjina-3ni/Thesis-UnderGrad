@@ -55,3 +55,43 @@ clf.fit(X_train, y_train)
 
 # making predictions on the testing set 
 y_pred = clf.predict(X_test) 
+
+# %% confusion matrix
+
+# comparing actual response values (y_test) with predicted response values (y_pred) 
+confusionmatrix(y_test, y_pred)
+
+# %% ROC curve
+
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_curve
+import matplotlib.pyplot as plt 
+plt.rc("font", size=14)
+
+logit_roc_auc = roc_auc_score(y_test, clf.predict(X_test))
+fpr, tpr, thresholds = roc_curve(y_test, clf.predict_proba(X_test)[:,1])
+plt.figure()
+plt.plot(fpr, tpr, label='Naive Bayes (area = %0.2f)' % logit_roc_auc)
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic')
+plt.legend(loc="lower right")
+plt.savefig('Log_ROC')
+plt.show()
+
+# k fold cross validation
+#from sklearn import cross_validation
+#from sklearn.cross_validation import KFold, cross_val_score
+
+# %%  cross validation
+from sklearn.model_selection import cross_val_score
+#k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=1)
+cv = cross_val_score(clf, X, target, cv=5)
+
+s = 0
+for i in range(0,len(cv)):
+    s = s + cv[i]
+print "Accuracy after cross validation : ", (s/len(cv))*100
