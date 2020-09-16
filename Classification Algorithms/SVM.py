@@ -63,5 +63,16 @@ y_pred = clf.predict(X_test)
 # comparing actual response values (y_test) with predicted response values (y_pred) 
 confusionmatrix(y_test, y_pred)
 
+
 # %%
+from sklearn.model_selection import cross_val_score
+#k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=1)
+
+cv = cross_val_score(clf, X, target, cv=5)
+
+s = 0
+for i in range(0,len(cv)):
+    s = s + cv[i]
+print "Accuracy after cross validation : ", (s/len(cv))*100
+
 
