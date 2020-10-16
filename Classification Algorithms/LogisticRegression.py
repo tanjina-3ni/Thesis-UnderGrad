@@ -6,6 +6,7 @@ Created on Thu May 14 13:35:08 2020
 """
 import pandas as pd
 
+# %%
 def confusionmatrix(y_test, y_pred):
     from sklearn.metrics import confusion_matrix
     import matplotlib.pyplot as plt
@@ -26,11 +27,11 @@ def confusionmatrix(y_test, y_pred):
     b=mat[0][0]*1.0
     sen = (mat[1][0]+mat[1][1])*1.0 
     pre = (mat[0][1]+mat[1][1])*1.0 
-    print "Accuracy: {:.2f}".format((a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100)
+    #print "Accuracy: {:.2f}".format((a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100)
     print "Sensitivity or Recall: {:.2f}".format(a/sen*100)
     print "Precision: {:.2f}".format(a/pre*100)
     
-    
+#%%    
 
 
 data = pd.read_csv('F:/Dataset/Mode/cleveland V2mode(corr2).csv')
@@ -40,17 +41,23 @@ target = data.iloc[:,-1]
 
 # splitting X and y into training and testing sets 
 from sklearn.model_selection import train_test_split 
-from sklearn.linear_model import LogisticRegression
+
 X_train, X_test, y_train, y_test = train_test_split(X, target, test_size=0.3, random_state=1) 
+
+# %%
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
 logreg = LogisticRegression()
 logreg.fit(X_train, y_train) 
 
 y_pred = logreg.predict(X_test)
-print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(logreg.score(X_test, y_test)))
+#print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(logreg.score(X_test, y_test)))
+print "Accuracy:" ,accuracy_score(y_test,y_pred)*100
 
-
+#%%
 confusionmatrix(y_test, y_pred)
-
+#%%
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import roc_curve
 import matplotlib.pyplot as plt 
@@ -65,7 +72,18 @@ plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
+plt.title('Receiver Operating Characteristic')
 plt.legend(loc="lower right")
 plt.savefig('Log_ROC')
 plt.show()
+# %%
+from sklearn.model_selection import cross_val_score
+#k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=1)
+clf = logreg
+cv = cross_val_score(clf, X, target, cv=10)
+
+s = 0
+for i in range(0,len(cv)):
+    s = s + cv[i]
+print "Accuracy after cross validation : ", (s/len(cv))*100
+

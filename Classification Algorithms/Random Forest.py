@@ -1,17 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Sep 27 12:52:23 2020
 
-@author: Aspire
-"""
-
-
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb 26 09:10:55 2020
-
-@author: Aspire
-"""
 
 import pandas as pd
 
@@ -36,7 +23,7 @@ def confusionmatrix(y_test, y_pred):
     b=mat[0][0]*1.0
     sen = (mat[1][0]+mat[1][1])*1.0 
     pre = (mat[0][1]+mat[1][1])*1.0 
-    print "Accuracy: ",(a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100
+    #print "Accuracy: ",(a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100
     print "Sensitivity or Recall: ",a/sen*100
     print "Precision: ",a/pre*100
     
@@ -57,6 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, target, test_size=0.3, ra
 
 #%%
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 #Create a Gaussian Classifier
 clf=RandomForestClassifier(n_estimators=100, random_state=0, criterion="entropy", max_depth=3)
@@ -65,7 +53,7 @@ clf.fit(X_train, y_train)
 # making predictions on the testing set 
 y_pred = clf.predict(X_test) 
 
-
+print "Accuracy:" ,accuracy_score(y_test,y_pred)*100
 # %%
 
 # comparing actual response values (y_test) with predicted response values (y_pred) 
@@ -96,7 +84,7 @@ plt.show()
 from sklearn.model_selection import cross_val_score
 #k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=1)
 
-cv = cross_val_score(clf, X, target, cv=5)
+cv = cross_val_score(clf, X, target, cv=10)
 
 s = 0
 for i in range(0,len(cv)):

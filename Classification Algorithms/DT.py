@@ -28,7 +28,7 @@ def confusionmatrix(y_test, y_pred):
     b=mat[0][0]*1.0
     sen = (mat[1][0]+mat[1][1])*1.0 
     pre = (mat[0][1]+mat[1][1])*1.0 
-    print "Accuracy: ",(a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100
+    #print "Accuracy: ",(a+b)/(mat[0][0]+mat[1][0]+mat[0][1]+mat[1][1])*100
     print "Sensitivity or Recall: ",a/sen*100
     print "Precision: ",a/pre*100
     
@@ -50,12 +50,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, target, test_size=0.3, ra
 #%%
 
 from sklearn.tree import DecisionTreeClassifier
-clf = DecisionTreeClassifier(criterion="entropy", max_depth=3)
+from sklearn.metrics import accuracy_score
+
+clf = DecisionTreeClassifier(criterion="entropy", splitter = "best", max_depth=3)
 clf.fit(X_train, y_train) 
 
 # making predictions on the testing set 
 y_pred = clf.predict(X_test) 
-
+print "Accuracy:" ,accuracy_score(y_test,y_pred)*100
 # %% confusion matrix
 
 # comparing actual response values (y_test) with predicted response values (y_pred) 
@@ -71,13 +73,13 @@ plt.rc("font", size=14)
 logit_roc_auc = roc_auc_score(y_test, clf.predict(X_test))
 fpr, tpr, thresholds = roc_curve(y_test, clf.predict_proba(X_test)[:,1])
 plt.figure()
-plt.plot(fpr, tpr, label='Naive Bayes (area = %0.2f)' % logit_roc_auc)
+plt.plot(fpr, tpr, label='Decision Tree (area = %0.2f)' % logit_roc_auc)
 plt.plot([0, 1], [0, 1],'r--')
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
+plt.title('Receiver Operating Characteristic')
 plt.legend(loc="lower right")
 plt.savefig('Log_ROC')
 plt.show()
@@ -89,7 +91,7 @@ plt.show()
 # %%  cross validation
 from sklearn.model_selection import cross_val_score
 #k_fold = KFold(len(target), n_folds=5, shuffle=True, random_state=1)
-cv = cross_val_score(clf, X, target, cv=5)
+cv = cross_val_score(clf, X, target, cv=10)
 
 s = 0
 for i in range(0,len(cv)):
